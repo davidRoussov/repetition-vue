@@ -12,7 +12,6 @@
 
 <style scoped>
   #studyComponent {
-    background-color: green;
     height: 100%;
   }
 </style>
