@@ -55,6 +55,7 @@
 
 <script>
 import { SIDEBAR_WIDTH } from '@/config'
+import { SERVER_URL } from '@/config'
 
 export default {
   created: () => setTimeout(() => {
@@ -78,6 +79,17 @@ export default {
       console.log(this.$data)
       console.log(this.$data.newTopicName)
       const newTopicName = this.$data.newTopicName;
+      fetch(SERVER_URL + '/api/topics', {
+        method: 'POST',
+        body: JSON.stringify({
+          newTopicName
+        }),
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8'
+        }
+      })
+      .then(response => console.log(response))
     }
   }
 }
