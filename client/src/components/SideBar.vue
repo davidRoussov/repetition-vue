@@ -22,6 +22,34 @@
         <li><a href="#">Separated link</a></li>
       </ul>
     </div>
+
+    <!-- ADD NEW TOPIC BUTTON -->
+    <button id="addTopicButton" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#addTopicModal">Add new topic</button>
+
+    <!-- MODAL FOR ADDING NEW TOPIC -->
+    <div id="addTopicModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add a new topic</h4>
+          </div>
+          <form class="form-horizontal" v-on:submit="submitNewTopic">
+            <div class="modal-body">
+                <div class="form-group">
+                  <div class="col-lg-10">
+                    <input class="form-control" id="inputEmail" placeholder="Enter new topic name" type="text" v-model="newTopicName">
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -38,7 +66,20 @@ export default {
       const element = elements[i]
       element.style.width = topicButtonWidth
     }
-  }, 0)
+  }, 0),
+  data: function () {
+    return {
+      newTopicName: ''
+    }
+  },
+  methods: {
+    submitNewTopic: function () {
+      console.log('meow')
+      console.log(this.$data)
+      console.log(this.$data.newTopicName)
+      const newTopicName = this.$data.newTopicName;
+    }
+  }
 }
 </script>
 
@@ -47,6 +88,7 @@ export default {
     height: 100%;
     float: left;
     background-color: #95a5a6;
+    text-align: center;
   }
   
   .topic-button-container {
@@ -61,6 +103,10 @@ export default {
 
   .topic-button-dropdown {
     border-radius: 0px;
+  }
+
+  #addTopicButton {
+    margin-top: 20px;
   }
 
 </style>
