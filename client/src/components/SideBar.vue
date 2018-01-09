@@ -75,7 +75,6 @@ export default {
   },
   methods: {
     submitNewTopic: function () {
-      console.log('meow')
       console.log(this.$data)
       console.log(this.$data.newTopicName)
       const newTopicName = this.$data.newTopicName;

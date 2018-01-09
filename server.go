@@ -1,20 +1,35 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 
 	"github.com/rs/cors"
 )
 
-func addTopicHandler() {
-	fmt.Println("add topic handler called")
+type testStruct struct {
+	Test string
 }
 
-func topicsHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
+func topicsHandler(w http.ResponseWriter, req *http.Request) {
+	switch req.Method {
 	case "POST":
-		addTopicHandler()
+		body, err := ioutil.ReadAll(req.Body)
+		if err != nil {
+			panic(err)
+		}
+		log.Println("one")
+		log.Println(string(body))
+		var t testStruct
+		err = json.Unmarshal(body, &t)
+		if err != nil {
+			panic(err)
+		}
+		log.Println("two")
+		log.Println(t.Test)
 		break
 	default:
 		fmt.Println("ERROR: bad http method")
@@ -27,6 +42,7 @@ func main() {
 
 	handler := cors.Default().Handler(mux)
 
-	// http.HandleFunc("/api/topics", topicsHandler)
-	http.ListenAndServe(":8081", handler)
+	PORT := ":8080"
+	log.Println("listening on", PORT)
+	log.Fatal(http.ListenAndServe(PORT, handler))
 }
