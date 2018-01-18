@@ -2,11 +2,11 @@ package main
 
 import (
 	"log"
-	// "net/http"
+	"net/http"
 	"os"
 
 	// "github.com/rs/cors"
-	router "github.com/davidRoussov/repetition-vue/server/api"
+	routes "github.com/davidRoussov/repetition-vue/server/api"
 )
 
 func main() {
@@ -18,11 +18,9 @@ func main() {
 
 	// handler := cors.Default().Handler(mux)
 
-	// router := router()
+	router := routes.Router()
 
-	log.Println(router.Monkey())
-
-	// PORT := ":8080"
-	// log.Println("listening on", PORT)
-	// log.Fatal(http.ListenAndServe(PORT, router))
+	PORT := ":8080"
+	log.Println("listening on", PORT)
+	log.Fatal(http.ListenAndServe(PORT, router))
 }
