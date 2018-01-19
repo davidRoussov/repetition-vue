@@ -74,7 +74,8 @@ export default {
     }
   },
   methods: {
-    submitNewTopic: function () {
+    submitNewTopic: function (e) {
+      e.preventDefault();
       console.log(this.$data)
       console.log(this.$data.newTopicName)
       const newTopicName = this.$data.newTopicName;

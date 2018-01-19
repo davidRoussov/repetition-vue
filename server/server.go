@@ -5,9 +5,17 @@ import (
 	"net/http"
 	"os"
 
-	// "github.com/rs/cors"
+	"github.com/rs/cors"
+	log "github.com/sirupsen/logrus"
+
 	routes "github.com/davidRoussov/repetition-vue/server/api"
 )
+
+func init() {
+	log.SetFormatter(&log.TextFormatter{})
+	log.SetOutput(os.Stdout)
+	log.SetLevel(log.DebugLevel)
+}
 
 func main() {
 	ENVIRONMENT := os.Getenv("ENV")
@@ -20,7 +28,9 @@ func main() {
 
 	router := routes.Router()
 
-	PORT := ":8080"
+	handler := cors.Default().Handler(router)
+
+	PORT := ":8081"
 	log.Println("listening on", PORT)
-	log.Fatal(http.ListenAndServe(PORT, router))
+	log.Fatal(http.ListenAndServe(PORT, handler))
 }

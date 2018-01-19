@@ -6,9 +6,9 @@ import (
 
 func Router() *httprouter.Router {
 	router := httprouter.New()
-	router.GET("/api/topics", topicsHandler)
+
+	router.GET("/api/topics", getTopics)
+	router.POST("/api/topics", createTopic)
 
 	return router
 }
-
-
