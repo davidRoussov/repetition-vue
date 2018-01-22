@@ -6,16 +6,9 @@ import (
 	"os"
 
 	"github.com/rs/cors"
-	log "github.com/sirupsen/logrus"
 
 	routes "github.com/davidRoussov/repetition-vue/server/api"
 )
-
-func init() {
-	log.SetFormatter(&log.TextFormatter{})
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.DebugLevel)
-}
 
 func main() {
 	ENVIRONMENT := os.Getenv("ENV")

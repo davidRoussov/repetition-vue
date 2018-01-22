@@ -1,17 +1,16 @@
 package api
 
 import (
+	"encoding/json"
+	"io/ioutil"
+	"log"
 	"net/http"
-	"os"
 
 	"github.com/julienschmidt/httprouter"
-	log "github.com/sirupsen/logrus"
 )
 
-func init() {
-	log.SetFormatter(&log.TextFormatter{})
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.DebugLevel)
+type create_topic_request struct {
+	NewTopicName string
 }
 
 func getTopics(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -19,5 +18,18 @@ func getTopics(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 }
 
 func createTopic(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	log.Debug("In topics createTopic")
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	log.Println(string(body))
+
+	var data create_topic_request
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println(data)
+	log.Println(data.NewTopicName)
 }
