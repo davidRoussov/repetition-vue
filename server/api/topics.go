@@ -7,6 +7,8 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+
+	topics "github.com/davidRoussov/repetition-vue/server/models"
 )
 
 type create_topic_request struct {
@@ -30,6 +32,6 @@ func createTopic(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		panic(err)
 	}
 
-	log.Println(data)
 	log.Println(data.NewTopicName)
+	topics.Create(data.NewTopicName)
 }
