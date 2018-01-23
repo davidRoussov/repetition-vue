@@ -15,6 +15,10 @@ type create_topic_request struct {
 	NewTopicName string
 }
 
+type response_struct struct {
+	Success bool
+}
+
 func getTopics(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	log.Println(w, "getTopics called")
 }
@@ -24,7 +28,6 @@ func createTopic(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	if err != nil {
 		panic(err)
 	}
-	log.Println(string(body))
 
 	var data create_topic_request
 	err = json.Unmarshal(body, &data)
@@ -32,6 +35,14 @@ func createTopic(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		panic(err)
 	}
 
-	log.Println(data.NewTopicName)
 	topics.Create(data.NewTopicName)
+
+	var response response_struct
+	response.Success = true
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		panic(err)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResponse)
 }

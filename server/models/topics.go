@@ -15,9 +15,6 @@ type Topic struct {
 }
 
 func Create(newTopic string) {
-	log.Println("In models topics create")
-	log.Println(newTopic)
-
 	connection, session := connect("topics")
 	defer session.Close()
 
@@ -25,5 +22,4 @@ func Create(newTopic string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
