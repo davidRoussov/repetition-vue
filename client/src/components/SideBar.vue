@@ -56,6 +56,7 @@
 <script>
 import { SIDEBAR_WIDTH } from '@/config'
 import { SERVER_URL } from '@/config'
+import store from '@/store'
 
 export default {
   created: () => setTimeout(() => {
@@ -76,8 +77,10 @@ export default {
   methods: {
     submitNewTopic: function (e) {
       e.preventDefault();
-      console.log(this.$data)
-      console.log(this.$data.newTopicName)
+
+      $('#addTopicModal').modal('hide'); 
+      store.commit('setLoading')
+
       const newTopicName = this.$data.newTopicName;
       fetch(SERVER_URL + '/api/topics', {
         method: 'POST',
@@ -89,7 +92,20 @@ export default {
           'Content-Type': 'application/json;charset=UTF-8'
         }
       })
-      .then(response => console.log(response))
+      .then(response => response.json())
+      .then(response => {
+        store.commit('setSuccess')
+        setTimeout(() => {
+          store.commit('setHidden')
+        }, 3000);
+      })
+      .catch(error => {
+        console.error(error)
+        store.commit('setFailure')
+        setTimeout(() => {
+          store.commit('setHidden')
+        }, 3000);
+      })
     }
   }
 }
