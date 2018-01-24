@@ -1,17 +1,21 @@
 <template>
   <div>
-    <i id="loading" class="loadingIndicator fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
-    <i id="success" class="loadingIndicator fa fa-check" aria-hidden="true"></i>
-    <i id="failure" class="loadingIndicator fa fa-times" aria-hidden="true"></i>
+    <i v-if="displayLoading" id="loading" class="loadingIndicator fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+    <i v-if="displaySuccess" id="success" class="loadingIndicator fa fa-check" aria-hidden="true"></i>
+    <i v-if="displayFailure" id="failure" class="loadingIndicator fa fa-times" aria-hidden="true"></i>
   </div>
 </template>
 
 <script>
+  import store from '../store';
+  import { mapState } from 'vuex';
 
   export default {
-    created: () => {
-      console.log(store.loadingIndicator)
-    }
+    computed: mapState({
+      displayLoading: state => state.loadingIndicator === 'loading',
+      displaySuccess: state => state.loadingIndicator === 'success',
+      displayFailure: state => state.loadingIndicator === 'failure'
+    })
   }
 
 </script>
