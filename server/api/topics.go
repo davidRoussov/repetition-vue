@@ -21,9 +21,18 @@ type response_struct struct {
 
 func getTopics(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	log.Println(w, "getTopics called")
+
+	var response response_struct
+	response.Success = true
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		panic(err)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResponse)
 }
 
-func createTopic(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func createTopic(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		panic(err)

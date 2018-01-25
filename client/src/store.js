@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import { SERVER_URL } from '@/config'
+
 Vue.use(Vuex)
 
 const state = {
@@ -19,6 +21,9 @@ const mutations = {
   },
   setHidden(state) {
     state.loadingIndicator = 'hidden'
+  },
+  setTopics(state, topics) {
+    state.topics = topics
   }
 }
 
@@ -26,7 +31,35 @@ const actions = {
   setLoading: ({ commit }) => commit('setLoading'),
   setSuccess: ({ commit }) => commit('setSuccess'),
   setFailure: ({ commit }) => commit('setFailure'),
-  setHidden: ({ commit }) => commit('setHidden')
+  setHidden: ({ commit }) => commit('setHidden'),
+
+  getTopics: ({ commit }) => {
+    fetch(`${SERVER_URL}/api/topics`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(response => {
+      console.log('SUCCESS!')
+      console.log(JSON.stringify(response, null, 2))
+
+      commit('setSuccess')
+      setTimeout(() => {
+        commit('setHidden')
+      }, 3000)
+    })
+    .catch(error => {
+      console.log('ERROR!')
+      console.log(error)
+
+      commit('setFailure')
+      setTimeout(() => {
+        commit('setHidden')
+      }, 3000)
+    })
+  }
 }
 
 const getters = {

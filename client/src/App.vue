@@ -13,6 +13,7 @@
 import MenuBar from '@/components/MenuBar'
 import SideBar from '@/components/SideBar'
 import LoadingIndicator from '@/components/LoadingIndicator'
+import store from './store'
 
 import { SIDEBAR_WIDTH } from '@/config'
 
@@ -25,6 +26,8 @@ export default {
   },
   created: () => setTimeout(() => {
     document.getElementById('content').style.marginLeft = SIDEBAR_WIDTH
+
+    store.dispatch('getTopics')
   })
 }
 </script>
