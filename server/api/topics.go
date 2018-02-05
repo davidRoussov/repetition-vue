@@ -22,9 +22,11 @@ type response_struct struct {
 func getTopics(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	log.Println(w, "getTopics called")
 
-	var response response_struct
-	response.Success = true
-	jsonResponse, err := json.Marshal(response)
+	topicsList := topics.Get()
+
+	log.Println(topicsList)
+
+	jsonResponse, err := json.Marshal(topicsList)
 	if err != nil {
 		panic(err)
 	}
