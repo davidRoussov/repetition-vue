@@ -1,18 +1,7 @@
 <template>
   <div id="sidebar">
-    <div class="btn-group topic-button-container">
-      <a href="#" class="btn btn-default topic-button">Default</a>
-      <a href="#" class="btn btn-default dropdown-toggle topic-button-dropdown" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
-      <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
-      </ul>
-    </div>
-    <div class="btn-group topic-button-container">
-      <a href="#" class="btn btn-default topic-button">Two</a>
+    <div v-for="topic in topics" class="btn-group topic-button-container">
+      <a href="#" class="btn btn-default topic-button">{{ topic.Name }}</a>
       <a href="#" class="btn btn-default dropdown-toggle topic-button-dropdown" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
       <ul class="dropdown-menu">
         <li><a href="#">Action</a></li>
@@ -57,6 +46,7 @@
 import { SIDEBAR_WIDTH } from '@/config'
 import { SERVER_URL } from '@/config'
 import store from '@/store'
+import { mapState } from 'vuex';
 
 export default {
   created: () => setTimeout(() => {
@@ -68,7 +58,11 @@ export default {
       const element = elements[i]
       element.style.width = topicButtonWidth
     }
+
   }, 0),
+  computed: mapState({
+    topics: state => state.topics
+  }),
   data: function () {
     return {
       newTopicName: ''
@@ -126,11 +120,12 @@ export default {
 
   .topic-button {
     border-radius: 0px;
-    /* width: 102.02px; */
+    width: 75%;
   }
 
   .topic-button-dropdown {
     border-radius: 0px;
+    width: 25%;
   }
 
   #addTopicButton {

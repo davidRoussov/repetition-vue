@@ -6,7 +6,8 @@ import { SERVER_URL } from '@/config'
 Vue.use(Vuex)
 
 const state = {
-  loadingIndicator: 'hidden'
+  loadingIndicator: 'hidden',
+  topics: []
 }
 
 const mutations = {
@@ -42,8 +43,7 @@ const actions = {
     })
     .then(response => response.json())
     .then(response => {
-      console.log('SUCCESS!')
-      console.log(JSON.stringify(response, null, 2))
+      commit('setTopics', response)
 
       commit('setSuccess')
       setTimeout(() => {
