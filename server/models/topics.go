@@ -7,13 +7,13 @@ import (
 )
 
 type Item struct {
-	_id      bson.ObjectId
+	ID       bson.ObjectId `db:"id" json:"id" bson:"_id"`
 	Question string
 	Answer   string
 }
 
 type Topic struct {
-	_id   bson.ObjectId
+	ID    bson.ObjectId `db:"id" json:"id" bson:"_id"`
 	Name  string
 	Items []Item
 }
@@ -23,7 +23,7 @@ func Create(newTopic string) {
 	defer session.Close()
 
 	var topic = &Topic{
-		_id:   bson.NewObjectId(),
+		ID:    bson.NewObjectId(),
 		Name:  newTopic,
 		Items: []Item{},
 	}
@@ -43,11 +43,6 @@ func Get() []Topic {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	log.Print("retrieved topics:")
-	log.Print(topics)
-	log.Print(topics[0])
-	log.Print(topics[0]._id.MarshalText)
 
 	return topics
 }
