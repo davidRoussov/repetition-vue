@@ -94,35 +94,10 @@ export default {
       store.commit('selectTopic', topicID);
     },
     submitNewTopic: function (e) {
-      e.preventDefault();
-
-      $('#addTopicModal').modal('hide'); 
-      store.commit('setLoading')
-
-      const newTopicName = this.$data.newTopicName;
-      fetch(SERVER_URL + '/api/topics', {
-        method: 'POST',
-        body: JSON.stringify({
-          newTopicName
-        }),
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8'
-        }
-      })
-      .then(response => response.json())
-      .then(response => {
-        store.commit('setSuccess')
-        setTimeout(() => {
-          store.commit('setHidden')
-        }, 3000);
-      })
-      .catch(error => {
-        console.error(error)
-        store.commit('setFailure')
-        setTimeout(() => {
-          store.commit('setHidden')
-        }, 3000);
-      })
+      e.preventDefault()
+      $('#addTopicModal').modal('hide')
+      const newTopicName = this.$data.newTopicName
+      store.dispatch('createTopic', newTopicName)
     }
   }
 }

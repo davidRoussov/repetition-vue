@@ -38,6 +38,37 @@ const actions = {
   setFailure: ({ commit }) => commit('setFailure'),
   setHidden: ({ commit }) => commit('setHidden'),
 
+  createTopic: ({ commit, dispatch }, newTopicName) => {
+    commit('setLoading')
+
+    fetch(SERVER_URL + '/api/topics', {
+      method: 'POST',
+      body: JSON.stringify({
+        newTopicName
+      }),
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+      }
+    })
+    .then(response => response.json())
+    .then(response => {
+      dispatch('getTopics')
+
+      commit('setSuccess')
+      setTimeout(() => {
+        commit('setHidden')
+      }, 3000)
+    })
+    .catch(error => {
+      console.error(error)
+
+      commit('setFailure')
+      setTimeout(() => {
+        commit('setHidden')
+      }, 3000)
+    })
+  },
+
   getTopics: ({ commit }) => {
     fetch(`${SERVER_URL}/api/topics`, {
       method: 'GET',
