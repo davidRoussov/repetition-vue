@@ -1,15 +1,32 @@
 <template>
   <div id="addComponent">
     <h2 id="heading">Add</h2>
-    <input disabled id="inputNewQuestion" class="form-control" type="text" placeholder="Enter new problem">
-    <textarea disabled id="inputNewAnswer" class="form-control" type="textarea" placeholder="Enter the solution"></textarea>
+    <input 
+      :disabled="!selectedTopic" 
+      id="inputNewQuestion" 
+      class="form-control" 
+      type="text" 
+      placeholder="Enter new problem"
+    >
+    <textarea 
+      :disabled="!selectedTopic" 
+      id="inputNewAnswer" 
+      class="form-control" 
+      type="textarea" 
+      placeholder="Enter the solution"
+    ></textarea>
     <button type="button" class="btn btn-primary">Submit</button>
   </div>  
 </template>
 
 <script>
-  export default {
+  import store from '@/store'
+  import { mapState } from 'vuex';
 
+  export default {
+    computed: mapState({
+      selectedTopic: state => state.selectedTopic
+    })
   }
 </script>
 

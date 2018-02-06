@@ -1,9 +1,20 @@
 <template>
   <div id="studyComponent">
     <h2 id="heading">Study</h2>
-    <input disabled id="inputQuestion" class="form-control" type="text" placeholder="Modify question">
-    <textarea disabled id="inputAnswer" class="form-control" type="textarea" placeholder="Modify answer"></textarea>
-
+    <input 
+      :disabled="!selectedTopic"
+      id="inputQuestion" 
+      class="form-control" 
+      type="text" 
+      placeholder="Modify question"
+    >
+    <textarea 
+      :disabled="!selectedTopic"
+      id="inputAnswer" 
+      class="form-control" 
+      type="textarea" 
+      placeholder="Modify answer"
+    ></textarea>
 
     <div class="btn-group btn-group-justified">
       <a href="#" class="btn btn-primary">Hide</a>
@@ -12,13 +23,17 @@
       <a href="#" class="btn btn-danger">Bad</a>
     </div>
 
-
   </div>  
 </template>
 
 <script>
-  export default {
+  import store from '@/store'
+  import { mapState } from 'vuex';
 
+  export default {
+    computed: mapState({
+      selectedTopic: state => state.selectedTopic
+    })
   }
 </script>
 
