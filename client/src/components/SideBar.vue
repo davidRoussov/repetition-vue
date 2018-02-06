@@ -1,8 +1,23 @@
 <template>
   <div id="sidebar">
     <div v-for="topic in topics" class="btn-group topic-button-container">
-      <a href="#" class="btn btn-default topic-button">{{ topic.Name }}</a>
-      <a href="#" class="btn btn-default dropdown-toggle topic-button-dropdown" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+
+      <a 
+        href="#" 
+        v-on:click="handleClickTopic(topic.id)" 
+        v-bind:class="[isSelectedTopic(topic.id) ? selectedTopicClasses : normalTopicClasses]"
+      >{{ topic.Name }}
+      </a>
+      <a 
+        href="#" 
+        class="btn btn-default dropdown-toggle topic-button-dropdown"
+        v-bind:class="[isSelectedTopic(topic.id) ? selectedTopicClassesDropdown : normalTopicClassesDropdown]"
+        data-toggle="dropdown" 
+        aria-expanded="false"
+      >
+        <span class="caret"></span>
+      </a>
+
       <ul class="dropdown-menu">
         <li><a href="#">Action</a></li>
         <li><a href="#">Another action</a></li>
@@ -61,14 +76,23 @@ export default {
 
   }, 0),
   computed: mapState({
-    topics: state => state.topics
+    topics: state => state.topics,
+    selectedTopic: state => state.selectedTopic
   }),
   data: function () {
     return {
-      newTopicName: ''
+      newTopicName: '',
+      selectedTopicClasses: 'btn btn-success topic-button',
+      normalTopicClasses: 'btn btn-default topic-button',
+      selectedTopicClassesDropdown: 'btn btn-success dropdown-toggle topic-button-dropdown',
+      normalTopicClassesDropdown: 'btn btn-default dropdown-toggle topic-button-dropdown',
+      isSelectedTopic: topicID => this.selectedTopic === topicID
     }
   },
   methods: {
+    handleClickTopic(topicID) {
+      store.commit('selectTopic', topicID);
+    },
     submitNewTopic: function (e) {
       e.preventDefault();
 
@@ -81,7 +105,6 @@ export default {
         body: JSON.stringify({
           newTopicName
         }),
-        mode: 'cors',
         headers: {
           'Content-Type': 'application/json;charset=UTF-8'
         }

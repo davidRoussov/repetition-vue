@@ -7,7 +7,8 @@ Vue.use(Vuex)
 
 const state = {
   loadingIndicator: 'hidden',
-  topics: []
+  topics: [],
+  selectedTopic: null
 }
 
 const mutations = {
@@ -25,6 +26,9 @@ const mutations = {
   },
   setTopics(state, topics) {
     state.topics = topics
+  },
+  selectTopic(state, topicID) {
+    state.selectedTopic = topicID
   }
 }
 
