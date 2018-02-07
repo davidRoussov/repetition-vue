@@ -38,6 +38,37 @@ const actions = {
   setFailure: ({ commit }) => commit('setFailure'),
   setHidden: ({ commit }) => commit('setHidden'),
 
+  createItem: ({ commit, dispatch }, item) => {
+    commit('setLoading')
+
+    fetch(SERVER_URL + '/api/items', {
+      method: 'POST',
+      body: JSON.stringify({ item }),
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+      }
+    })
+    .then(handleErrors)
+    .then(response => response.json())
+    .then(response => {
+      console.log('SUCCESS!')
+      console.log(response)
+
+      commit('setSuccess')
+      setTimeout(() => {
+        commit('setHidden')
+      }, 3000)
+    })
+    .catch(error => {
+      console.error(error)
+
+      commit('setFailure')
+      setTimeout(() => {
+        commit('setHidden')
+      }, 3000)
+    })
+  },
+
   createTopic: ({ commit, dispatch }, newTopicName) => {
     commit('setLoading')
 
@@ -101,9 +132,17 @@ const getters = {
   loadingIndicator: state => state.loadingIndicator
 }
 
+function handleErrors(response) {
+  if (!response.ok) {
+    throw Error(response.statusText)
+  }
+  return response
+}
+
 export default new Vuex.Store({
   state,
   getters,
   actions,
   mutations
 })
+

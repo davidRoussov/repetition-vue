@@ -3,6 +3,7 @@
     <h2 id="heading">Add</h2>
     <input 
       :disabled="!selectedTopic" 
+      v-model="question"
       id="inputNewQuestion" 
       class="form-control" 
       type="text" 
@@ -10,12 +11,17 @@
     >
     <textarea 
       :disabled="!selectedTopic" 
+      v-model="answer"
       id="inputNewAnswer" 
       class="form-control" 
       type="textarea" 
       placeholder="Enter the solution"
     ></textarea>
-    <button type="button" class="btn btn-primary">Submit</button>
+    <button 
+      type="button" 
+      class="btn btn-primary"
+      v-on:click="handleSubmitItem"
+    >Submit</button>
   </div>  
 </template>
 
@@ -24,9 +30,24 @@
   import { mapState } from 'vuex';
 
   export default {
+    data: function() {
+      return {
+        question: '',
+        answer: ''
+      }
+    },
     computed: mapState({
       selectedTopic: state => state.selectedTopic
-    })
+    }),
+    methods: {
+      handleSubmitItem() {
+        const newItem = {
+          question: this.question,
+          answer: this.answer
+        }
+        store.dispatch('createItem', newItem);
+      }
+    }
   }
 </script>
 
