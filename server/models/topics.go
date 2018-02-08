@@ -18,6 +18,38 @@ type Topic struct {
 	Items []Item
 }
 
+func AddItem(topicID string, question string, answer string) {
+	connection, session := connect("topics")
+	defer session.Close()
+
+	// log.Println(topicID)
+
+	// var result Topic
+
+	// err := connection.FindId(bson.ObjectIdHex(topicID)).One(&result)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// log.Println(result)
+
+	var newItem = &Item{
+		ID:       bson.NewObjectId(),
+		Question: question,
+		Answer:   answer,
+	}
+
+	match := bson.M{"_id": bson.ObjectIdHex(topicID)}
+	change := bson.M{"$push": bson.M{"items": newItem}}
+	err := connection.Update(match, change)
+	if err != nil {
+		panic(err)
+	}
+
+	// err := connection.Find(bson.M{"_id":
+
+}
+
 func Create(newTopic string) {
 	connection, session := connect("topics")
 	defer session.Close()

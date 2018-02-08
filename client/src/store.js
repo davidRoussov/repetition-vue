@@ -43,7 +43,7 @@ const actions = {
 
     fetch(SERVER_URL + '/api/items', {
       method: 'POST',
-      body: JSON.stringify({ item }),
+      body: JSON.stringify({ item, topic: state.selectedTopic }),
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
