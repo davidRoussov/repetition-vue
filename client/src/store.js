@@ -9,7 +9,7 @@ const state = {
   loadingIndicator: 'hidden',
   topics: [],
   selectedTopic: null,
-  selectedTopicItems: null
+  currentItem: {}
 }
 
 const mutations = {
@@ -30,6 +30,9 @@ const mutations = {
   },
   selectTopic(state, topicID) {
     state.selectedTopic = topicID
+  },
+  setCurrentItem(state, item) {
+    state.currentItem = item
   }
 }
 
@@ -43,13 +46,14 @@ const actions = {
     commit('selectTopic', topicID)
 
     const currentItem = state.topics
-      .filter(topic => topic.id === topicID)
+      .filter(topic => topic.id === topicID)[0].Items
       .sort((a, b) => {
-        if (a.rank < b.rank) return -1
-        else if (a.rank > b.rank) return 1
+        if (a.Rank < b.Rank) return -1
+        else if (a.Rank > b.Rank) return 1
 
         return 0
       })[0]
+
     commit('setCurrentItem', currentItem)
   },
 

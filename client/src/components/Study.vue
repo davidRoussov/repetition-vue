@@ -7,6 +7,7 @@
       class="form-control" 
       type="text" 
       placeholder="Modify question"
+      v-model="currentItem.Question"
     >
     <textarea 
       :disabled="!selectedTopic"
@@ -14,6 +15,7 @@
       class="form-control" 
       type="textarea" 
       placeholder="Modify answer"
+      v-model="currentItem.Answer"
     ></textarea>
 
     <div class="btn-group btn-group-justified">
