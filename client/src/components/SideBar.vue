@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     handleClickTopic(topicID) {
-      store.commit('selectTopic', topicID);
+      store.dispatch('selectTopic', topicID);
     },
     submitNewTopic: function (e) {
       e.preventDefault()

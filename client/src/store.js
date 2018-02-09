@@ -8,7 +8,8 @@ Vue.use(Vuex)
 const state = {
   loadingIndicator: 'hidden',
   topics: [],
-  selectedTopic: null
+  selectedTopic: null,
+  selectedTopicItems: null
 }
 
 const mutations = {
@@ -38,6 +39,20 @@ const actions = {
   setFailure: ({ commit }) => commit('setFailure'),
   setHidden: ({ commit }) => commit('setHidden'),
 
+  selectTopic: ({ commit, dispatch }, topicID) => {
+    commit('selectTopic', topicID)
+
+    const currentItem = state.topics
+      .filter(topic => topic.id === topicID)
+      .sort((a, b) => {
+        if (a.rank < b.rank) return -1
+        else if (a.rank > b.rank) return 1
+
+        return 0
+      })[0]
+    commit('setCurrentItem', currentItem)
+  },
+
   createItem: ({ commit, dispatch }, item) => {
     commit('setLoading')
 
@@ -51,9 +66,6 @@ const actions = {
     .then(handleErrors)
     .then(response => response.json())
     .then(response => {
-      console.log('SUCCESS!')
-      console.log(response)
-
       commit('setSuccess')
       setTimeout(() => {
         commit('setHidden')

@@ -32,7 +32,8 @@
 
   export default {
     computed: mapState({
-      selectedTopic: state => state.selectedTopic
+      selectedTopic: state => state.selectedTopic,
+      currentItem: state => state.currentItem
     })
   }
 </script>
