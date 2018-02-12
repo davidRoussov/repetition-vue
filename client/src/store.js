@@ -13,25 +13,25 @@ const state = {
 }
 
 const mutations = {
-  setLoading(state) {
+  setLoading (state) {
     state.loadingIndicator = 'loading'
   },
-  setSuccess(state) {
+  setSuccess (state) {
     state.loadingIndicator = 'success'
   },
-  setFailure(state) {
+  setFailure (state) {
     state.loadingIndicator = 'failure'
   },
-  setHidden(state) {
+  setHidden (state) {
     state.loadingIndicator = 'hidden'
   },
-  setTopics(state, topics) {
+  setTopics (state, topics) {
     state.topics = topics
   },
-  selectTopic(state, topicID) {
+  selectTopic (state, topicID) {
     state.selectedTopic = topicID
   },
-  setCurrentItem(state, item) {
+  setCurrentItem (state, item) {
     state.currentItem = item
   }
 }
@@ -42,10 +42,11 @@ const actions = {
   setFailure: ({ commit }) => commit('setFailure'),
   setHidden: ({ commit }) => commit('setHidden'),
 
-  goodItem: ({ commit, dispatch }) => {
+  updateItemRank: ({ commit, dispatch }, type) => {
     if (state.currentItem.id) {
       const itemID = state.currentItem.id
-      const newRank = getMaximumRank(state.topics, state.selectedTopic) + 1
+      const newRank = calculateNewRank(state.topics, state.selectedTopic, type)
+      console.log(newRank)
       const newTopics = state.topics.map(topic => {
         if (topic.id === state.selectedTopic) {
           return {
@@ -71,14 +72,6 @@ const actions = {
     }
   },
 
-  passItem: ({ commit }) => {
-
-  },
-
-  badItem: ({ commit }) => {
-
-  },
-
   updateTopic: ({ commit }) => {
     commit('setLoading')
 
@@ -101,8 +94,6 @@ const actions = {
     })
     .catch(error => {
       console.error(error)
-
-      console.log(JSON.stringify(state.topics, null, 2))
 
       commit('setFailure')
       setTimeout(() => {
@@ -220,7 +211,21 @@ const getters = {
   loadingIndicator: state => state.loadingIndicator
 }
 
-function getMaximumRank(topics, topicID) {
+function calculateNewRank (topics, selectedTopic, type) {
+  const maxRank = getMaximumRank(topics, selectedTopic)
+  switch (type) {
+    case 'good':
+      return maxRank + 1
+    case 'pass':
+      return Math.ceil(maxRank / 2)
+    case 'bad':
+      return Math.ceil(maxRank / 4)
+    default:
+      return 0
+  }
+}
+
+function getMaximumRank (topics, topicID) {
   return topics
     .filter(topic => topic.id === topicID)[0]
     .Items
@@ -233,7 +238,7 @@ function getMaximumRank(topics, topicID) {
     .Rank
 }
 
-function handleErrors(response) {
+function handleErrors (response) {
   if (!response.ok) {
     throw Error(response.statusText)
   }

@@ -61,13 +61,13 @@
     }),
     methods: {
       handleClickGood() {
-        store.dispatch('goodItem')
+        store.dispatch('updateItemRank', 'good')
       },
       handleClickPass() {
-        store.dispatch('passItem')
+        store.dispatch('updateItemRank', 'pass')
       },
       handleClickBad() {
-        store.dispatch('badItem')
+        store.dispatch('updateItemRank', 'bad')
       }
     }
   }
