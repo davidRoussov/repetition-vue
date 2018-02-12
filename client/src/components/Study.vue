@@ -10,16 +10,21 @@
       v-model="currentItem.Question"
     >
     <textarea 
-      :disabled="!selectedTopic"
+      :disabled="!selectedTopic || answerHidden"
       id="inputAnswer" 
       class="form-control" 
+      v-bind:class="{ 'answer-hidden': answerHidden }"
       type="textarea" 
       placeholder="Modify answer"
       v-model="currentItem.Answer"
     ></textarea>
 
     <div class="btn-group btn-group-justified">
-      <a href="#" class="btn btn-primary">Hide</a>
+      <a 
+        href="#" 
+        class="btn btn-primary"
+        v-on:click="answerHidden = !answerHidden"
+      >{{ answerHidden ? 'Show' : 'Hide' }}</a>
       <a href="#" class="btn btn-success">Good</a>
       <a href="#" class="btn btn-warning">Pass</a>
       <a href="#" class="btn btn-danger">Bad</a>
@@ -33,6 +38,11 @@
   import { mapState } from 'vuex';
 
   export default {
+    data: function() {
+      return {
+        answerHidden: true
+      }
+    },
     computed: mapState({
       selectedTopic: state => state.selectedTopic,
       currentItem: state => state.currentItem
@@ -41,6 +51,12 @@
 </script>
 
 <style scoped>
+  .answer-hidden {
+    color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
   #studyComponent {
     height: 100%;
     padding: 20px;
