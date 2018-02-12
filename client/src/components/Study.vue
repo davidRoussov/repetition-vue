@@ -25,9 +25,21 @@
         class="btn btn-primary"
         v-on:click="answerHidden = !answerHidden"
       >{{ answerHidden ? 'Show' : 'Hide' }}</a>
-      <a href="#" class="btn btn-success">Good</a>
-      <a href="#" class="btn btn-warning">Pass</a>
-      <a href="#" class="btn btn-danger">Bad</a>
+      <a 
+        href="#" 
+        class="btn btn-success"
+        v-on:click="handleClickGood"
+      >Good</a>
+      <a 
+        href="#" 
+        class="btn btn-warning"
+        v-on:click="handleClickPass"
+      >Pass</a>
+      <a 
+        href="#" 
+        class="btn btn-danger"
+        v-on:click="handleClickBad"
+      >Bad</a>
     </div>
 
   </div>  
@@ -46,7 +58,18 @@
     computed: mapState({
       selectedTopic: state => state.selectedTopic,
       currentItem: state => state.currentItem
-    })
+    }),
+    methods: {
+      handleClickGood() {
+        store.dispatch('goodItem')
+      },
+      handleClickPass() {
+        store.dispatch('passItem')
+      },
+      handleClickBad() {
+        store.dispatch('badItem')
+      }
+    }
   }
 </script>
 

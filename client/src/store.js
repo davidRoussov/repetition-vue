@@ -42,9 +42,76 @@ const actions = {
   setFailure: ({ commit }) => commit('setFailure'),
   setHidden: ({ commit }) => commit('setHidden'),
 
-  selectTopic: ({ commit, dispatch }, topicID) => {
-    commit('selectTopic', topicID)
+  goodItem: ({ commit, dispatch }) => {
+    if (state.currentItem.id) {
+      const itemID = state.currentItem.id
+      const newRank = getMaximumRank(state.topics, state.selectedTopic) + 1
+      const newTopics = state.topics.map(topic => {
+        if (topic.id === state.selectedTopic) {
+          return {
+            ...topic,
+            Items: topic.Items.map(item => {
+              if (item.id === itemID) {
+                return {
+                  ...item,
+                  Rank: newRank
+                }
+              } else {
+                return item
+              }
+            })
+          }
+        } else {
+          return topic
+        }
+      })
+      commit('setTopics', newTopics)
+      dispatch('resetCurrentItem', state.selectedTopic)
+      dispatch('updateTopic')
+    }
+  },
 
+  passItem: ({ commit }) => {
+
+  },
+
+  badItem: ({ commit }) => {
+
+  },
+
+  updateTopic: ({ commit }) => {
+    commit('setLoading')
+
+    const topic = state.topics.filter(topic => topic.id === state.selectedTopic)
+
+    fetch(SERVER_URL + '/api/topics', {
+      method: 'PATCH',
+      body: JSON.stringify(topic),
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+      }
+    })
+    .then(handleErrors)
+    .then(response => response.json())
+    .then(response => {
+      commit('setSuccess')
+      setTimeout(() => {
+        commit('setHidden')
+      }, 3000)
+    })
+    .catch(error => {
+      console.error(error)
+
+      console.log(JSON.stringify(state.topics, null, 2))
+
+      commit('setFailure')
+      setTimeout(() => {
+        commit('setHidden')
+      }, 3000)
+    })
+  },
+
+  resetCurrentItem: ({ commit }, topicID) => {
     const currentItem = state.topics
       .filter(topic => topic.id === topicID)[0].Items
       .sort((a, b) => {
@@ -55,6 +122,11 @@ const actions = {
       })[0]
 
     commit('setCurrentItem', currentItem)
+  },
+
+  selectTopic: ({ commit, dispatch }, topicID) => {
+    commit('selectTopic', topicID)
+    dispatch('resetCurrentItem', topicID)
   },
 
   createItem: ({ commit, dispatch }, item) => {
@@ -146,6 +218,19 @@ const actions = {
 
 const getters = {
   loadingIndicator: state => state.loadingIndicator
+}
+
+function getMaximumRank(topics, topicID) {
+  return topics
+    .filter(topic => topic.id === topicID)[0]
+    .Items
+    .sort((a, b) => {
+      if (a.Rank < b.Rank) return 1
+      else if (a.Rank > b.Rank) return -1
+
+      return 0
+    })[0]
+    .Rank
 }
 
 function handleErrors(response) {
