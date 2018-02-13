@@ -21,7 +21,13 @@ func main() {
 
 	router := routes.Router()
 
-	handler := cors.Default().Handler(router)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:8080"},
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+	})
+
+	handler := c.Handler(router)
 
 	PORT := ":8081"
 	log.Println("listening on", PORT)

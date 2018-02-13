@@ -46,7 +46,7 @@ const actions = {
     if (state.currentItem.id) {
       const itemID = state.currentItem.id
       const newRank = calculateNewRank(state.topics, state.selectedTopic, type)
-      console.log(newRank)
+      console.log(JSON.stringify(state.topics, null, 2))
       const newTopics = state.topics.map(topic => {
         if (topic.id === state.selectedTopic) {
           return {
@@ -66,19 +66,20 @@ const actions = {
           return topic
         }
       })
-      commit('setTopics', newTopics)
-      dispatch('resetCurrentItem', state.selectedTopic)
-      dispatch('updateTopic')
+      console.log(JSON.stringify(newTopics, null, 2))
+      // commit('setTopics', newTopics)
+      // dispatch('resetCurrentItem', state.selectedTopic)
+      // dispatch('updateTopic')
     }
   },
 
   updateTopic: ({ commit }) => {
     commit('setLoading')
 
-    const topic = state.topics.filter(topic => topic.id === state.selectedTopic)
+    const topic = state.topics.filter(topic => topic.id === state.selectedTopic)[0]
 
     fetch(SERVER_URL + '/api/topics', {
-      method: 'PATCH',
+      method: 'PUT',
       body: JSON.stringify(topic),
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'

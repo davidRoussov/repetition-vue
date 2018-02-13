@@ -19,6 +19,17 @@ type Topic struct {
 	Items []Item
 }
 
+func Update(topic Topic) {
+	log.Println("In models topics Update")
+	connection, session := connect("topics")
+	defer session.Close()
+
+	err := connection.UpdateId(topic.ID, topic)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func AddItem(topicID string, question string, answer string) {
 	connection, session := connect("topics")
 	defer session.Close()
