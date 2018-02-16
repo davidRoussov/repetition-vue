@@ -57,7 +57,7 @@
     },
     computed: mapState({
       selectedTopic: state => state.selectedTopic,
-      currentItem: state => state.currentItem
+      currentItem: state => state.currentItem || {}
     }),
     methods: {
       handleClickGood() {

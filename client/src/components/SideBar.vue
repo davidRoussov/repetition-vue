@@ -19,11 +19,8 @@
       </a>
 
       <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
+        <li><a href="#">Edit</a></li>
+        <li><a href="#" v-on:click="showDeleteTopicModal = true">Delete</a></li>
       </ul>
     </div>
 
@@ -54,6 +51,18 @@
         </div>
       </div>
     </div>
+
+
+
+
+  <delete-topic-modal 
+    v-on:hide="showDeleteTopicModal = false"
+    :visible="showDeleteTopicModal"
+  ></delete-topic-modal>
+
+
+
+
   </div>
 </template>
 
@@ -62,8 +71,12 @@ import { SIDEBAR_WIDTH } from '@/config'
 import { SERVER_URL } from '@/config'
 import store from '@/store'
 import { mapState } from 'vuex';
+import DeleteTopicModal from '@/components/DeleteTopicModal';
 
 export default {
+  components: {
+    DeleteTopicModal
+  },
   created: () => setTimeout(() => {
     const topicButtonWidth = (SIDEBAR_WIDTH.split('px').join('') - 27.98) + 'px'
 
@@ -86,7 +99,8 @@ export default {
       normalTopicClasses: 'btn btn-default topic-button',
       selectedTopicClassesDropdown: 'btn btn-success dropdown-toggle topic-button-dropdown',
       normalTopicClassesDropdown: 'btn btn-default dropdown-toggle topic-button-dropdown',
-      isSelectedTopic: topicID => this.selectedTopic === topicID
+      isSelectedTopic: topicID => this.selectedTopic === topicID,
+      showDeleteTopicModal: false
     }
   },
   methods: {

@@ -46,7 +46,6 @@ const actions = {
     if (state.currentItem.id) {
       const itemID = state.currentItem.id
       const newRank = calculateNewRank(state.topics, state.selectedTopic, type)
-      console.log(JSON.stringify(state.topics, null, 2))
       const newTopics = state.topics.map(topic => {
         if (topic.id === state.selectedTopic) {
           return {
@@ -66,10 +65,9 @@ const actions = {
           return topic
         }
       })
-      console.log(JSON.stringify(newTopics, null, 2))
-      // commit('setTopics', newTopics)
-      // dispatch('resetCurrentItem', state.selectedTopic)
-      // dispatch('updateTopic')
+      commit('setTopics', newTopics)
+      dispatch('resetCurrentItem', state.selectedTopic)
+      dispatch('updateTopic')
     }
   },
 
