@@ -42,6 +42,35 @@ const actions = {
   setFailure: ({ commit }) => commit('setFailure'),
   setHidden: ({ commit }) => commit('setHidden'),
 
+  deleteTopic: ({ commit, dispatch }, topicID) => {
+    console.log(topicID)
+
+    commit('setLoading')
+
+    fetch(`${SERVER_URL}/api/topics?id=${topicID}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+      }
+    })
+    .then(handleErrors)
+    .then(response => response.json())
+    .then(response => {
+      commit('setSuccess')
+      setTimeout(() => {
+        commit('setHidden')
+      }, 3000)
+    })
+    .catch(error => {
+      console.error(error)
+
+      commit('setFailure')
+      setTimeout(() => {
+        commit('setHidden')
+      }, 3000)
+    })
+  },
+
   updateItemRank: ({ commit, dispatch }, type) => {
     if (state.currentItem.id) {
       const itemID = state.currentItem.id

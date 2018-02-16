@@ -10,13 +10,14 @@
           <div class="modal-body">
               <div class="form-group">
                 <div class="col-lg-10">
-                  <p> hey there!</p>
+                  <p> confirm you wish to delete: <span style="font-weight: bold;">{{ topic && topic.Name }}</span> </p>
+                  <p> <span style="font-weight: bold;">warning:</span> this will delete all associated items</p>
                 </div>
               </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" v-on:click="hide">Close</button>
-            <button type="submit" class="btn btn-danger">Submit</button>
+            <button type="submit" class="btn btn-danger" v-on:click="submit">Submit</button>
           </div>
         </form>
       </div>
@@ -25,8 +26,10 @@
 </template>
 
 <script>
+import store from '@/store'
+
 export default {
-  props: ['visible'],
+  props: ['visible', 'topic'],
   watch: {
     '$props': {
       handler: function (val) {
@@ -46,6 +49,10 @@ export default {
   },
   methods: {
     hide: function() {
+      this.$emit('hide')
+    },
+    submit: function() {
+      store.dispatch('deleteTopic', this.topic.id)
       this.$emit('hide')
     }
   }

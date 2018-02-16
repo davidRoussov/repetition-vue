@@ -20,7 +20,7 @@
 
       <ul class="dropdown-menu">
         <li><a href="#">Edit</a></li>
-        <li><a href="#" v-on:click="showDeleteTopicModal = true">Delete</a></li>
+        <li><a href="#" v-on:click="handleClickTopicDelete(topic)">Delete</a></li>
       </ul>
     </div>
 
@@ -58,6 +58,7 @@
   <delete-topic-modal 
     v-on:hide="showDeleteTopicModal = false"
     :visible="showDeleteTopicModal"
+    :topic="topicForOptions"
   ></delete-topic-modal>
 
 
@@ -100,10 +101,15 @@ export default {
       selectedTopicClassesDropdown: 'btn btn-success dropdown-toggle topic-button-dropdown',
       normalTopicClassesDropdown: 'btn btn-default dropdown-toggle topic-button-dropdown',
       isSelectedTopic: topicID => this.selectedTopic === topicID,
-      showDeleteTopicModal: false
+      showDeleteTopicModal: false,
+      topicForOptions: null
     }
   },
   methods: {
+    handleClickTopicDelete(topic) {
+      this.topicForOptions = topic
+      this.showDeleteTopicModal = true
+    },
     handleClickTopic(topicID) {
       store.dispatch('selectTopic', topicID);
     },
