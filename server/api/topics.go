@@ -20,6 +20,12 @@ type response_struct struct {
 	Success bool
 }
 
+func deleteTopic(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	log.Println("In topics deletTopic")
+
+	log.Println(p.ByName("id"))
+}
+
 func updateTopic(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	log.Println("In topic updateTopic")
 

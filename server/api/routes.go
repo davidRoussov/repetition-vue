@@ -10,6 +10,7 @@ func Router() *httprouter.Router {
 	router.GET("/api/topics", getTopics)
 	router.POST("/api/topics", createTopic)
 	router.PUT("/api/topics", updateTopic)
+	router.DELETE("/api/topics/:id", deleteTopic)
 
 	router.POST("/api/items", createItem)
 
