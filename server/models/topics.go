@@ -21,13 +21,19 @@ type Topic struct {
 
 func Update(topic Topic) {
 	log.Println("In models topics Update")
-	connection, session := connect("topics")
-	defer session.Close()
 
-	err := connection.UpdateId(topic.ID, topic)
-	if err != nil {
-		panic(err)
-	}
+	log.Println(topic)
+	log.Println(topic.ID)
+	log.Println(topic.Items)
+	log.Println(topic.Name)
+
+	// connection, session := connect("topics")
+	// defer session.Close()
+
+	// err := connection.UpdateId(topic.ID, topic)
+	// if err != nil {
+	// 	panic(err)
+	// }
 }
 
 func AddItem(topicID string, question string, answer string) {
